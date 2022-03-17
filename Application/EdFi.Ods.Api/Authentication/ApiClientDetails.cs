@@ -3,6 +3,7 @@
 // The Ed-Fi Alliance licenses this file to you under the Apache License, Version 2.0.
 // See the LICENSE and NOTICES files in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using EdFi.Admin.DataAccess.Models;
@@ -21,7 +22,7 @@ namespace EdFi.Ods.Api.Authentication
         /// </summary>
         public ApiClientDetails()
         {
-            EducationOrganizationIds = new List<int>();
+            EducationOrganizationIds = Array.Empty<int>();
             NamespacePrefixes = new List<string>();
             Profiles = new List<string>();
             OwnershipTokenIds = new List<short?>();
@@ -43,7 +44,7 @@ namespace EdFi.Ods.Api.Authentication
         /// <summary>
         /// Gets or sets the list of Education Organization Ids associated with the API key.
         /// </summary>
-        public IList<int> EducationOrganizationIds { get; set; }
+        public int[] EducationOrganizationIds { get; set; }
 
         /// <summary>
         /// Gets or sets the ApplicationId for the client.
@@ -124,11 +125,11 @@ namespace EdFi.Ods.Api.Authentication
 
             ApiClientDetails LoadAllEducationOrganizationIds(ApiClientDetails dto)
             {
-                tokenClientRecords
+                dto.EducationOrganizationIds = tokenClientRecords
                     .Where(x => x.EducationOrganizationId.HasValue)
                     .Select(x => x.EducationOrganizationId.Value)
                     .Distinct()
-                    .ForEach(x => dto.EducationOrganizationIds.Add(x));
+                    .ToArray();
 
                 return dto;
             }

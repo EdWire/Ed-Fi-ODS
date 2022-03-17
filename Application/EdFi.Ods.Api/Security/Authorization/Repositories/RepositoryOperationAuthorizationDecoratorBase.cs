@@ -373,17 +373,13 @@ namespace EdFi.Ods.Api.Security.Authorization.Repositories
                     .OrderBy(n => n)
                     .ToArray();
 
-                string claimEndpointNamesText = $"'{string.Join("', '", claimEndpointNames)}'";
                 string subjectEndpointNamesText = $"'{string.Join("', '", subjectEndpointNames)}'";
-
-                string typeOrTypes = Inflector.Inflect("type", claimEndpointNames.Length);
 
                 object[] claimEndpointValues = resultsWithPendingExistenceChecks.SelectMany(x => x.FilterResults.Select(f => f.FilterContext))
                     .FirstOrDefault()
                     ?.ClaimEndpointValues;
 
                 string claimOrClaims = Inflector.Inflect("claim", claimEndpointValues?.Length ?? 0);
-                string claimValueOrValues = Inflector.Inflect("value", claimEndpointValues?.Length ?? 0);
 
                 const int MaximumEdOrgClaimValuesToDisplay = 5;
 
@@ -403,12 +399,12 @@ namespace EdFi.Ods.Api.Security.Authorization.Repositories
                 if (subjectEndpointNames.Length == 1)
                 {
                     return $"Authorization denied. No relationships have been established between the caller's education "
-                        + $"organization id {claimOrClaims} ({claimValueOrValues} {claimEndpointValuesText} of {typeOrTypes} {claimEndpointNamesText}) and the requested resource's "
+                        + $"organization id {claimOrClaims} ({claimEndpointValuesText}) and the requested resource's "
                         + $"{subjectEndpointNamesText} value.";
                 }
 
                 return $"Authorization denied. No relationships have been established between the caller's education "
-                    + $"organization id {claimOrClaims} ({claimValueOrValues} {claimEndpointValuesText} of {typeOrTypes} {claimEndpointNamesText}) and one of the following properties of "
+                    + $"organization id {claimOrClaims} ({claimEndpointValuesText}) and one of the following properties of "
                     + $"the requested resource: {subjectEndpointNamesText}.";
             }
         }
