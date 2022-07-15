@@ -3,19 +3,19 @@
 // The Ed-Fi Alliance licenses this file to you under the Apache License, Version 2.0.
 // See the LICENSE and NOTICES files in the project root for more information.
 
+using EdFi.Common.Extensions;
+using EdFi.Ods.Api.IdentityValueMappers;
+using EdFi.Ods.Common.Caching;
+using EdFi.Ods.Common.Context;
+using EdFi.Ods.Common.Providers;
+using EdFi.Ods.Common.Specifications;
+using log4net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using EdFi.Common.Extensions;
-using EdFi.Ods.Api.IdentityValueMappers;
-using EdFi.Ods.Common.Caching;
-using EdFi.Ods.Common.Context;
-using EdFi.Ods.Common.Extensions;
-using EdFi.Ods.Common.Providers;
-using EdFi.Ods.Common.Specifications;
-using log4net;
 
 namespace EdFi.Ods.Api.Caching
 {
@@ -108,10 +108,12 @@ namespace EdFi.Ods.Api.Caching
                 return default(string);
             }
 
+            // Call the value mapper for the individual value
+
+
             string context = GetUsiKeyTokenContext();
 
             string key = GetUniqueIdByUsiCacheKey(personType, usi, context);
-
             string uniqueId;
 
             // Get the cache first, initializing it if necessary
@@ -297,7 +299,6 @@ namespace EdFi.Ods.Api.Caching
                 {
                     string key = GetUniqueIdByUsiCacheKey(personType, valueMap.Usi, context);
                     uniqueIdByUsi.TryAdd(key, valueMap.UniqueId);
-
                     string key2 = GetUsiByUniqueIdCacheKey(personType, valueMap.UniqueId, context);
                     usiByUniqueId.TryAdd(key2, valueMap.Usi);
                 }
@@ -340,7 +341,6 @@ namespace EdFi.Ods.Api.Caching
         {
             return GetUniqueIdByUsiCacheKey(personType, usi, GetUsiKeyTokenContext());
         }
-
         private string GetUniqueIdByUsiCacheKey(string personType, int usi, string context)
         {
             string key = string.Format(
@@ -348,10 +348,8 @@ namespace EdFi.Ods.Api.Caching
                 personType,
                 usi,
                 context);
-
             return key;
         }
-
         private PersonIdentifiersValueMap GetUniqueIdValueMap(string personTypeName, int usi)
         {
             return _uniqueIdToUsiValueMapper.GetUniqueId(personTypeName, usi);
@@ -371,8 +369,9 @@ namespace EdFi.Ods.Api.Caching
                     : default(int);
             }
 
-            string context = GetUsiKeyTokenContext();
 
+
+            string context = GetUsiKeyTokenContext();
             string key = GetUsiByUniqueIdCacheKey(personType, uniqueId, context);
 
             int usi;
@@ -419,12 +418,10 @@ namespace EdFi.Ods.Api.Caching
 
             return valueMap.Usi;
         }
-
         private string GetUsiByUniqueIdCacheKey(string personTypeName, string uniqueId)
         {
             return GetUsiByUniqueIdCacheKey(personTypeName, uniqueId, GetUsiKeyTokenContext());
         }
-
         private string GetUsiByUniqueIdCacheKey(string personTypeName, string uniqueId, string context)
         {
             return string.Format("{0}_usi_{1}_by_uniqueid_{2}", personTypeName, context, uniqueId);
@@ -432,15 +429,17 @@ namespace EdFi.Ods.Api.Caching
 
         private string GetUsiKeyTokenContext()
         {
-            return string.Format((string) "from_{0}", (object) _edFiOdsInstanceIdentificationProvider.GetInstanceIdentification());
+            return string.Format((string)"from_{0}", (object)_edFiOdsInstanceIdentificationProvider.GetInstanceIdentification());
         }
 
         private class IdentityValueMaps
         {
             private readonly ReaderWriterLockSlim _mapLock = new ReaderWriterLockSlim();
 
+            [JsonProperty]
             private ConcurrentDictionary<string, string> _uniqueIdByUsi;
 
+            [JsonProperty]
             private ConcurrentDictionary<string, int> _usiByUniqueId;
 
             public ConcurrentDictionary<string, string> UniqueIdByUsi
@@ -483,6 +482,7 @@ namespace EdFi.Ods.Api.Caching
                 }
             }
 
+            [JsonIgnore]
             public Task InitializationTask { get; set; }
 
             public void SetMaps(
