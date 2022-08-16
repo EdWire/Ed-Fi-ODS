@@ -34,6 +34,7 @@
     <PackageReference Include="Remotion.Linq" Version="2.2.0" />
     <PackageReference Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
     <PackageReference Include="Sandwych.QuickGraph.Core" Version="1.0.0" />
+    <PackageReference Include="Standart.Hash.xxHash" Version="3.1.0" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Services\Metadata\Resources\*.json" />
