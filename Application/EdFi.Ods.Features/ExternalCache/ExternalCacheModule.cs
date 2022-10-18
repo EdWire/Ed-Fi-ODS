@@ -54,17 +54,17 @@ namespace EdFi.Ods.Features.ExternalCache
                 OverridePersonUniqueIdtoUsiCache(builder);
             }
 
-            if (IsSelected())
-            {
+            //if (IsSelected())
+            //{
 
-                builder.RegisterType<ExternalCacheProvider>()
-                    .WithParameter(
-                        new ResolvedParameter(
-                            (p, c) => p.ParameterType == typeof(TimeSpan),
-                            (p, c) => GetDefaultExpiration(c)))
-                    .As<ICacheProvider>()
-                    .SingleInstance();
-            }
+            //    builder.RegisterType<ExternalCacheProvider>()
+            //        .WithParameter(
+            //            new ResolvedParameter(
+            //                (p, c) => p.ParameterType == typeof(TimeSpan),
+            //                (p, c) => GetDefaultExpiration(c)))
+            //        .As<ICacheProvider>()
+            //        .SingleInstance();
+            //}
         }
 
         public abstract string ExternalCacheProvider { get; }
