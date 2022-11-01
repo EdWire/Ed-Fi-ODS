@@ -121,6 +121,9 @@ namespace EdFi.Ods.Api.Caching
         {
             using (var context = _securityContextFactory.CreateContext())
             {
+                //External Cache fix for proxy object deserialization issue
+                ((DbContext)context).Configuration.ProxyCreationEnabled = false;
+
                 var application = context.Applications.First(
                     app => app.ApplicationName.Equals(EdFiOdsApi, StringComparison.InvariantCultureIgnoreCase));
 
