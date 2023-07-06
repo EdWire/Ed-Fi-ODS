@@ -25,18 +25,18 @@ namespace EdFi.Ods.Features.Redis
                 return;
             }
 
-            var configurationOptions = new StackExchange.Redis.ConfigurationOptions();
+            //var configurationOptions = new StackExchange.Redis.ConfigurationOptions();
             
-            foreach(var hostAndPort in ApiSettings.Caching.Redis.Configuration.Split(","))
-            {
-                configurationOptions.EndPoints.Add(hostAndPort.Trim());
-            }
+            //foreach(var hostAndPort in ApiSettings.Caching.Redis.Configuration.Split(","))
+            //{
+            //    configurationOptions.EndPoints.Add(hostAndPort.Trim());
+            //}
             
-            configurationOptions.Password = ApiSettings.Caching.Redis.Password;
+            //configurationOptions.Password = ApiSettings.Caching.Redis.Password;
 
             builder.Register<IDistributedCache>((c, d) => new RedisCache(new RedisCacheOptions()
             {
-                ConfigurationOptions = configurationOptions
+                Configuration = ApiSettings.Caching.Redis.Configuration
             }
            ))
            .SingleInstance();
