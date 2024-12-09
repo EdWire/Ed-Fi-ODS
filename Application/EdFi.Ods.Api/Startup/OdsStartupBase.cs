@@ -89,6 +89,8 @@ namespace EdFi.Ods.Api.Startup
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAzureAppConfiguration();
+
             // Provide access to the web host environment through the container
             services.AddSingleton(_webHostEnvironment);
 
@@ -315,6 +317,8 @@ namespace EdFi.Ods.Api.Startup
         {
             // Process headers and query string arguments for correlation ids, and add to log messages
             app.UseRequestCorrelation();
+
+            app.UseAzureAppConfiguration();
 
             app.UseOAuthContentTypeValidation();
 
