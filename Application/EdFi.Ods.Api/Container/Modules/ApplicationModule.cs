@@ -518,6 +518,15 @@ namespace EdFi.Ods.Api.Container.Modules
                     .Named<IInterceptor>(InterceptorCacheKeys.ModelStateKey)
                     .WithParameter(ctx => (ICacheProvider<ulong>) new ConcurrentDictionaryCacheProvider<ulong>())
                     .SingleInstance();
+					
+					
+				builder.RegisterType<SnackPackMiddleware>()
+                    .AsSelf()
+                    .SingleInstance();
+
+                builder.RegisterType<StudentUniqueIdValidationMiddleware>()
+                    .AsSelf()
+                    .SingleInstance();
             }
         }
     }
