@@ -20,7 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Ed-Fi-ODS\Application\EdFi.Ods.Common\EdFi.Ods.Common.csproj" />
     <ProjectReference Include="..\..\..\Ed-Fi-ODS-Implementation\Application\EdFi.Ods.Extensions.TX\EdFi.Ods.Extensions.TX.csproj" />
-    <ProjectReference Include="..\..\..\Ed-Fi-ODS-Implementation\Application\EdFi.Ods.Extensions.EOP\EdFi.Ods.Extensions.EOP.csproj" />
     <ProjectReference Include="..\..\..\Ed-Fi-ODS-Implementation\Application\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.csproj" />
   </ItemGroup>
 </Project>
